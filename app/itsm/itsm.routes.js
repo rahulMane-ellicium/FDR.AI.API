@@ -4,10 +4,10 @@ import upload from "../../config/multer.config.js"
 import itsmServices from "../itsm/itsm.service.js"
 
 
-export const itsm=Router();
+export const itsmRouter=Router();
 
 
-itsm.post('/upload-excel', upload.single('file'), async (req, res, next) => {
+itsmRouter.post('/upload-excel', upload.single('file'), async (req, res, next) => {
     try {
         const { buffer } = req.file;
       const response = await itsmServices.readExcelFileFromBuffer(buffer);
