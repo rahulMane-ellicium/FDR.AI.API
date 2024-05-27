@@ -2,83 +2,83 @@ import { geminiModel } from "../../config/gemini.config.js";
 import XLSX from 'xlsx'
 const getItsmData = async () => {
   try {
-    const prompt = `
-Provide detailed ratings and information for the following ITSM tools: 
-- ServiceNow IT Service Management
-- SolarWinds Service Desk
-- ServiceDesk Plus
-- TOPdesk
-- SymphonyAI IT Service Management
-- Jira Service Management
-- Cherwell Service Management (Legacy)
-- Freshservice
-- SysAid
-- BMC Remedy Service Management Suite (Legacy)
-- Ivanti Neurons for ITSM
-- EV Service Manager
-- SolarWinds Web Help Desk
-- TeamDynamix ITSM
-- InvGate Service Desk
-
-
-For each tool, include:
-1. Ratings:
-   - Total number of reviews
-   - Ease of use rating
-   - Features rating
-   - Design rating
-   - Support rating
-
-2. API and Integration Support:
-   - API access (boolean)
-   - Integration support for:
-     - Active Directory
-     - Answer GPT
-     - Assess360
-     - BigID
-     - Cozyroc SSIS+ Suite
-     - CloudHub
-     - Elastic Observability
-     - Exalate
-     - Incydr
-     - Nexpose
-     - Other available integrations
-
-3. Pricing Details:
-   - Pricing tiers
-   - Free version availability (boolean)
-   - Free trial availability (boolean)
-
-4. Deployment Support:
-   - SaaS
-   - iPhone
-   - iPad
-   - Android
-   - Windows
-   - Mac
-   - Linux
-
-5. Customer Support Options:
-   - Phone Support
-   - 24/7 Live Support
-   - Online Support
-
-6. Training Platforms:
-   - Documentation
-   - Webinars
-   - Live online sessions
-   - In-person training
-
-7. Vendor Details:
-   - Company name
-   - Year founded
-   - Country
-
-8. List of Features:
-   - Comprehensive list of features offered by each tool
-
-Note: Provide all ratings as specific numbers,provide response in json format only ,not ranges. Use boolean values (true/false) where applicable.
-`;
+   const prompt = `
+   Provide detailed ratings and information for the following ITSM tools: 
+   - ServiceNow IT Service Management
+   - SolarWinds Service Desk
+   - ServiceDesk Plus
+   - TOPdesk
+   - SymphonyAI IT Service Management
+   - Jira Service Management
+   - Cherwell Service Management (Legacy)
+   - Freshservice
+   - SysAid
+   - BMC Remedy Service Management Suite (Legacy)
+   - Ivanti Neurons for ITSM
+   - EV Service Manager
+   - SolarWinds Web Help Desk
+   - TeamDynamix ITSM
+   - InvGate Service Desk
+   
+   
+   For each tool, include:
+   1. Ratings:
+      - Total number of reviews
+      - Ease of use rating
+      - Features rating
+      - Design rating
+      - Support rating
+   
+   2. API and Integration Support:
+      - API access (boolean)
+      - Integration support for:
+        - Active Directory
+        - Answer GPT
+        - Assess360
+        - BigID
+        - Cozyroc SSIS+ Suite
+        - CloudHub
+        - Elastic Observability
+        - Exalate
+        - Incydr
+        - Nexpose
+        - Other available integrations
+   
+   3. Pricing Details:
+      - Pricing tiers
+      - Free version availability (boolean)
+      - Free trial availability (boolean)
+   
+   4. Deployment Support:
+      - SaaS
+      - iPhone
+      - iPad
+      - Android
+      - Windows
+      - Mac
+      - Linux
+   
+   5. Customer Support Options:
+      - Phone Support
+      - 24/7 Live Support
+      - Online Support
+   
+   6. Training Platforms:
+      - Documentation
+      - Webinars
+      - Live online sessions
+      - In-person training
+   
+   7. Vendor Details:
+      - Company name
+      - Year founded
+      - Country
+   
+   8. List of Features:
+      - Comprehensive list of features offered by each tool
+   
+   Note: Provide all ratings as specific numbers not ranges,provide response in json format only, dont provide any other non object response in it such as default notes. Use boolean values (true/false) where applicable.
+   `;
     const result = await geminiModel.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
@@ -93,12 +93,14 @@ Note: Provide all ratings as specific numbers,provide response in json format on
 const convertResponseToJson=(response)=> {
    // Removing the surrounding quotes and backslashes
    const cleanedResponse = response.replace(/```json\n/g, '').replace(/\n```/g, '').replace(/\\n/g, '').replace(/\\"/g, '"');
-   
+   console.log(cleanedResponse)
    // Parsing the cleaned string to JSON
    const jsonResponse = JSON.parse(cleanedResponse);
    storeJsonToExcel(jsonResponse);
    return jsonResponse;
 }
+
+
 
 const storeJsonToExcel=(jsonData)=> {
    const wb = XLSX.utils.book_new();
