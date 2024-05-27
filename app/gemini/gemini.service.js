@@ -28,6 +28,7 @@ const getItsmData = async () => {
       - Features rating
       - Design rating
       - Support rating
+      - Overall rating
    
    2. API and Integration Support:
       - API access (boolean)
