@@ -1,13 +1,13 @@
 import { Router } from "express";
-import OpenAIService from "../OpenAI/openAI.service.js"
+import openAIService from "../OpenAI/openAI.service.js"
 import { ResponseHandler } from "../../utils/response.handlers.js";
 
-export const OpenAIRouter=Router()
+export const openAIRouter=Router()
 
-OpenAIRouter.get("/save-itsm-data",async(req,res,next)=>{
+openAIRouter.get("/Get-top3-tools-Openai",async(req,res,next)=>{
     try{
         const filePath = 'ITSMDATA.xlsx';
-        const response=await OpenAIService.GenerateData(filePath);
+        const response=await openAIService.GenerateData(filePath);
 
         res.status(200).send(new ResponseHandler(response));
     }catch(error){
@@ -17,14 +17,5 @@ OpenAIRouter.get("/save-itsm-data",async(req,res,next)=>{
 })
 
 
-OpenAIRouter.get("/get-all-itsm-tools",async(req,res,next)=>{
-    try{
 
-     
-        const response=await OpenAIService.readExcelToJson();
-        res.status(200).send(new ResponseHandler(response))
-    }catch(error){
-        next(error)
-    }
-})
 
