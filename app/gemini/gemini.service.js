@@ -2,6 +2,7 @@ import { geminiModel } from "../../config/gemini.config.js";
 import XLSX from 'xlsx'
 const getItsmData = async () => {
   try {
+    
    const prompt = `
    Provide detailed ratings and information for the following ITSM tools: 
    - ServiceNow IT Service Management
@@ -80,10 +81,12 @@ const getItsmData = async () => {
    
    Note: Provide all ratings as specific numbers not ranges,provide response in json format only, dont provide any other non object response in it such as default notes. Use boolean values (true/false) where applicable.
    `;
+   console.log("Outside prompt");
     const result = await geminiModel.generateContent(prompt);
     const response = await result.response;
+    console.log(response);
     const text = response.text();
-//   console.log(JSON.parse(text))
+//   console.log(text)
     return convertResponseToJson(text);
   } catch (error) {
     throw error;
@@ -111,6 +114,7 @@ const storeJsonToExcel=(jsonData)=> {
        const sheetName = project.substring(0, 31); // Limit sheet name to 31 characters
 
        const wsData = [];
+       console.log(wsData);
 
        // Add headers
        const headers = Object.keys(sheetData);
