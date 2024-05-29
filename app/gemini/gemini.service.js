@@ -86,7 +86,7 @@ const getItsmData = async () => {
     const response = await result.response;
    
     const text = response.text();
-    console.log(text);
+    
     return convertResponseToJson(text);
   } catch (error) {
     throw error;

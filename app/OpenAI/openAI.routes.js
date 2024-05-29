@@ -8,7 +8,7 @@ const upload = multer();
 
 export const openAIRouter = Router();
 
-openAIRouter.post("/Get-top3-tools-Openai",upload.single('file'),async(req,res,next)=>{
+openAIRouter.post("/get-top3-tools-Openai",upload.single('file'),async(req,res,next)=>{
     try{
         const {file} = req
         const response=await openAIService.generateData(file);

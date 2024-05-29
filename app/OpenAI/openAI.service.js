@@ -8,14 +8,17 @@ const generateData = async (file) => {
      const { buffer } = file;
      const workbook = XLSX.read(buffer, { type: "buffer" });
      const sheetName = workbook.SheetNames[0]; 
-   
+
      const worksheet = workbook.Sheets[sheetName];
+  
      const requirement = XLSX.utils.sheet_to_json(worksheet);
+     
       
      const requirementText = Object.entries(requirement[0])
        .map(([key, value]) => `  - ${key} : ${value}`)
        .join("\n");
- 
+     
+    
      const toolsAndObjectives = `Objective: Your objective is to analyze the requirements provided and suggest the three best-fitting ITSM tools from the list below:
      - ServiceNow ITSM
      - SolarWinds Service Desk
