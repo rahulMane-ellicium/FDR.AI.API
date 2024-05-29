@@ -5,7 +5,7 @@ const getItsmData = async () => {
     
    const prompt = `
    Provide detailed ratings and information for the following ITSM tools: 
-   - ServiceNow IT Service Management
+   - ServiceNow ITSM
    - SolarWinds Service Desk
    - ServiceDesk Plus
    - TOPdesk
@@ -86,7 +86,7 @@ const getItsmData = async () => {
     const response = await result.response;
    
     const text = response.text();
-
+    
     return convertResponseToJson(text);
   } catch (error) {
     throw error;
