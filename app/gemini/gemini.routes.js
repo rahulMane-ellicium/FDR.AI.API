@@ -1,7 +1,6 @@
 import { Router } from "express";
 import geminiService from "./gemini.service.js";
 import { ResponseHandler } from "../../utils/response.handlers.js";
-// import {} form 'cron';
 
 export const geminiRouter = Router();
 
