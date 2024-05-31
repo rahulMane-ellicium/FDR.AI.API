@@ -1,16 +1,11 @@
 import XLSX from "xlsx";
 
-const readExcelFileFromBuffer = async (buffer, limit = 3) => {
+const readExcelFileFromBuffer = async (buffer) => {
   try {
     const workbook = XLSX.read(buffer, { type: "buffer" });
     const jsonData = {};
 
-    for (
-      let sheetIndex = 0;
-      sheetIndex < Math.min(limit, workbook.SheetNames.length);
-      sheetIndex++
-    ) {
-      const sheetName = workbook.SheetNames[sheetIndex];
+    workbook.SheetNames.forEach(sheetName => {
       const ws = workbook.Sheets[sheetName];
       const sheetData = XLSX.utils.sheet_to_json(ws, { header: 1 });
 
@@ -18,28 +13,24 @@ const readExcelFileFromBuffer = async (buffer, limit = 3) => {
         const headers = sheetData[0];
         const values = sheetData.slice(1);
 
-        const sheetObj = {};
-
-        values.slice(0, limit).forEach((row) => {
+        jsonData[sheetName] = values.map(row => {
           const rowData = {};
           headers.forEach((header, columnIndex) => {
             const cellValue = row[columnIndex];
-
-            if (
-              typeof cellValue === "string" &&
-              (cellValue.startsWith("{") || cellValue.startsWith("["))
-            ) {
-              rowData[header] = JSON.parse(cellValue);
+            if (typeof cellValue === "string" && (cellValue.startsWith("{") || cellValue.startsWith("["))) {
+              try {
+                rowData[header] = JSON.parse(cellValue);
+              } catch (error) {
+                rowData[header] = cellValue;
+              }
             } else {
               rowData[header] = cellValue;
             }
           });
-          sheetObj[sheetName] = rowData;
+          return rowData;
         });
-
-        Object.assign(jsonData, sheetObj);
       }
-    }
+    });
 
     return jsonData;
   } catch (error) {
@@ -48,10 +39,20 @@ const readExcelFileFromBuffer = async (buffer, limit = 3) => {
   }
 };
 
+// const processExcelFile = async (buffer) => {
+//   try {
+//     // Read Excel file and convert to JSON
+//     const jsonData = await readExcelFileFromBuffer(buffer);
 
-
+//     // Insert data into the database
+//     await itsmDB.insertDataIntoDB(jsonData);
+//   } catch (error) {
+//     console.error('Error processing Excel file:', error);
+//     throw error;
+//   }
+// };
 
 export default {
   readExcelFileFromBuffer,
-
+  // processExcelFile
 };
