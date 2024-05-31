@@ -1,6 +1,8 @@
 import express from "express";
 import { routesRegister } from "./routesRegister/routes.register.js";
 import { config } from "dotenv";
+import scheduleItsmDataSave from './gemini/scheduler.js'; 
+
 config();
 
 const { PORT } = process.env;
@@ -9,6 +11,8 @@ export const startServer = async () => {
     try {
         const app = express();
         routesRegister(app);
+       scheduleItsmDataSave();
+
         app.listen(PORT, () => {
             console.log(`SERVER STARTED ON ${PORT}`);
         });
