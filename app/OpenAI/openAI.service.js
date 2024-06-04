@@ -13,7 +13,7 @@ const generateData = async (file) => {
     
     const response = await axios.post('http://127.0.0.1:8000/tools/', requirement);
   
-    const arrayGptOutput = response.data.response.slice(1, -1).split(', ').map(item => item.trim());
+    const arrayGptOutput = response.data.Top_tools;
     const topToolData = {};
     const allToolsData = await readExcelToJson(); 
     
