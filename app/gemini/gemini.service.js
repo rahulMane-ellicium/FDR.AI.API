@@ -10,18 +10,17 @@ const getItsmData = async () => {
    - SolarWinds Service Desk
    - ServiceDesk Plus
    - TOPdesk
-   - SymphonyAI IT Service Management
+   - SymphonyAI ITSM
    - Jira Service Management
-   - Cherwell Service Management (Legacy)
+   - Cherwell Service Management
    - Freshservice
    - SysAid
-   - BMC Remedy Service Management Suite (Legacy)
-   - Ivanti Neurons for ITSM
+   - BMC Remedy ITSM
+   - Ivanti Neurons ITSM
    - EV Service Manager
    - SolarWinds Web Help Desk
    - TeamDynamix ITSM
    - InvGate Service Desk
-   
    
    For each tool, include:
    1. Ratings:
@@ -80,7 +79,7 @@ const getItsmData = async () => {
    8. List of Features:
       - Comprehensive list of features offered by each tool
    
-   Note: Provide all ratings as specific numbers not ranges,provide response in json format only, dont provide any other non object response in it such as default notes. Use boolean values (true/false) where applicable.
+   Note: Provide all ratings as specific numbers not ranges, dont provide any other non object response in it such as default notes. Use boolean values (true/false) where applicable.
    `;
 
     const result = await geminiModel.generateContent(prompt);
@@ -100,7 +99,7 @@ const convertResponseToJson=(response)=> {
    const cleanedResponse = response.replace(/```json\n/g, '').replace(/\n```/g, '').replace(/\\n/g, '').replace(/\\"/g, '"');
   
    // Parsing the cleaned string to JSON
-   const jsonResponse = gemini_data;
+   const jsonResponse = JSON.parse(cleanedResponse);
    storeJsonToExcel(jsonResponse);
    return jsonResponse;
 }
