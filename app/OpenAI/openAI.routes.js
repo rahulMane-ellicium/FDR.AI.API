@@ -10,7 +10,7 @@ export const openAIRouter = Router();
 
 
 
-openAIRouter.post('/get-top3-tools-openai', upload.single('requirementsFile'), async (req, res, next) => {
+openAIRouter.post('/get-top3-tools-openai', upload.single('file'), async (req, res, next) => {
     try {
         const requirementsFilePath = req.file; 
         const featuresFilePath = 'PROJECT_features.xlsx';  
