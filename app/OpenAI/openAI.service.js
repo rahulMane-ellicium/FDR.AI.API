@@ -22,7 +22,7 @@ const generateData = async (file) => {
         topToolData[cleanedToolName] = allToolsData[cleanedToolName];
     });
     
-    return topToolData;
+    return {...topToolData,reason : response.data.Reasons};
     
    } catch (error) {
      throw error;
