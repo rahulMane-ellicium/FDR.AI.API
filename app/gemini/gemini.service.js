@@ -1,5 +1,6 @@
 import { geminiModel } from "../../config/gemini.config.js";
 import XLSX from 'xlsx'
+import { gemini_data } from "../constants/gemini.constants.js";
 const getItsmData = async () => {
   try {
     
@@ -99,7 +100,7 @@ const convertResponseToJson=(response)=> {
    const cleanedResponse = response.replace(/```json\n/g, '').replace(/\n```/g, '').replace(/\\n/g, '').replace(/\\"/g, '"');
   
    // Parsing the cleaned string to JSON
-   const jsonResponse = JSON.parse(cleanedResponse);
+   const jsonResponse = gemini_data;
    storeJsonToExcel(jsonResponse);
    return jsonResponse;
 }
