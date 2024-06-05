@@ -106,39 +106,7 @@ const convertResponseToJson = (response) => {
   return jsonResponse;
 };
 
-const storeJsonToExcel = (jsonData) => {
-  const wb = XLSX.utils.book_new();
 
-  for (const project in jsonData) {
-    const sheetData = jsonData[project];
-    const sheetName = project.substring(0, 31); // Limit sheet name to 31 characters
-
-    const wsData = [];
-
-    // Add headers
-    const headers = Object.keys(sheetData);
-    wsData.push(headers);
-
-    // Add data rows
-    const row = [];
-    for (const key in sheetData) {
-      const value = sheetData[key];
-      if (typeof value === 'object') {
-        row.push(JSON.stringify(value));
-      } else {
-        row.push(value);
-      }
-    }
-    wsData.push(row);
-
-    // Create worksheet
-    const ws = XLSX.utils.aoa_to_sheet(wsData);
-    XLSX.utils.book_append_sheet(wb, ws, sheetName);
-  }
-
-  // Write to file
-  XLSX.writeFile(wb, "PROJECT_features.xlsx");
-};
 
 
 export default {
