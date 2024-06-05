@@ -140,39 +140,7 @@ const storeJsonToExcel = (jsonData) => {
   XLSX.writeFile(wb, "PROJECT_features.xlsx");
 };
 
-const readExcelToJson = async () => {
-  try {
-    const wb = XLSX.readFile("PROJECT_features.xlsx");
-    const jsonData = {};
-
-    wb.SheetNames.forEach(sheetName => {
-      const ws = wb.Sheets[sheetName];
-      const sheetData = XLSX.utils.sheet_to_json(ws, { header: 1 });
-
-      // Convert sheet data to object
-      const headers = sheetData[0];
-      const values = sheetData.slice(1);
-
-      const sheetObj = {};
-      for (let i = 0; i < headers.length; i++) {
-        if (values[0][i].startsWith('{') || values[0][i].startsWith('[')) {
-          sheetObj[headers[i]] = JSON.parse(values[0][i]);
-        } else {
-          sheetObj[headers[i]] = values[0][i];
-        }
-      }
-
-      jsonData[sheetName] = sheetObj;
-    });
-
-    return jsonData;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
 
 export default {
-  getItsmData,
-  readExcelToJson
+  getItsmData
 };
