@@ -221,6 +221,53 @@ const saveItsmTools = async (itsmTools) => {
   }
 };
 
+const calculateTimeDifference = async (time1, time2) => {
+  // Convert the times to Date objects
+  const date1 = new Date(`1970-01-01T${time1}Z`);
+  const date2 = new Date(`1970-01-01T${time2}Z`);
+  
+  // Calculate the difference in milliseconds
+  let diffMs = date1 - date2;
+  
+  // If the difference is negative, add 24 hours (in milliseconds) to wrap around midnight
+  if (diffMs < 0) {
+      diffMs += 24 * 60 * 60 * 1000;
+  }
+  
+  // Convert the difference back to hours, minutes, and seconds
+  const diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
+  const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+  const diffSecs = Math.floor((diffMs % (1000 * 60)) / 1000);
+  
+  // Format the difference as HH:MM:SS
+  return `${String(diffHrs).padStart(2, '0')}:${String(diffMins).padStart(2, '0')}:${String(diffSecs).padStart(2, '0')}`;
+}
+
+
+const getLatestTimeStamp=async()=>{
+  try{
+    const getLatestTimeStampQuery=`SELECT TOP 1 created_at 
+    FROM ${SQL_SCHEMA}.tools
+    ORDER BY created_at DESC;`
+    const request=pool.request();
+    const result=await request.query(getLatestTimeStampQuery)   
+    const output=result.recordset[0].created_at
+    const stringData=output.toString().split(' ')
+    const calculatedTime = calculateTimeDifference(stringData[4], '05:30:00');
+    stringData[4] = (await calculatedTime).toString();
+    const newString = stringData.join().replaceAll(',', ' ').replace('GMT+0530 (India Standard Time)', '');
+    return newString
+  }catch(error){
+    console.log(error);
+    throw error
+  }
+}
+
+
+
+
 export default {
   saveItsmTools,
+  getLatestTimeStamp
 };
+
