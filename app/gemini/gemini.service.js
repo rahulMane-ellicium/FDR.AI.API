@@ -5,7 +5,7 @@ const getItsmData = async () => {
   try {
     
    const prompt = `
-   Provide detailed ratings and information for the following ITSM tools: 
+   Provide detailed ratings and information for the following ITSM tools:
    - ServiceNow ITSM
    - SolarWinds Service Desk
    - ServiceDesk Plus
@@ -23,64 +23,72 @@ const getItsmData = async () => {
    - InvGate Service Desk
    
    For each tool, include:
-   1. Ratings:
-      - Total number of reviews
-      - Ease of use rating
-      - Features rating
-      - Design rating
-      - Support rating
-      - Overall rating
+   {
+      [tool name] : {
+         "ratings": {
+            "total_reviews": number of reviews,
+            "ease_of_use": rating,
+            "features": rating,
+            "design": rating,
+            "support": rating,
+            "overall": rating
+        },
+        "api_and_integration_support": {
+         "api_access": boolean,
+         "integration_support": {
+             "active_directory": boolean,
+             "answer_gpt": boolean,
+             "assess360": boolean,
+             "bigid": boolean,
+             "cozyroc_ssis_suite": boolean,
+             "cloudhub": boolean,
+             "elastic_observability": boolean,
+             "exalate": boolean,
+             "incydr": boolean,
+             "nexpose": boolean,
+             "other_available_integrations": "Many other integrations are available"
+         }
+     },
+     "pricing_details": {
+         "pricing_tiers": starting price tire,
+         "free_version_availability": boolean,
+         "free_trial_availability": boolean
+     },
+     "deployment_support": {
+         "saas": boolean,
+         "iphone": boolean,
+         "ipad": boolean,
+         "android": boolean,
+         "windows": boolean,
+         "mac": boolean,
+         "linux": boolean
+     },
+     "customer_support_options": {
+         "phone_support": boolean,
+         "live_support": boolean,
+         "online_support": boolean
+     },
+     "training_platforms": {
+         "documentation": boolean,
+         "webinars": boolean,
+         "live_online_sessions": boolean,
+         "in_person_training": boolean
+     },
+     "vendor_details": {
+         "company_name": vendor name,
+         "year_founded": year,
+         "country": country
+     },
+     "features": [
+        Comprehensive list of features offered by each tool
+     ]
+      }  
+   }
    
-   2. API and Integration Support:
-      - API access (boolean)
-      - Integration support for:
-        - Active Directory
-        - Answer GPT
-        - Assess360
-        - BigID
-        - Cozyroc SSIS+ Suite
-        - CloudHub
-        - Elastic Observability
-        - Exalate
-        - Incydr
-        - Nexpose
-        - Other available integrations
    
-   3. Pricing Details:
-      - Pricing tiers
-      - Free version availability (boolean)
-      - Free trial availability (boolean)
-   
-   4. Deployment Support:
-      - SaaS
-      - iPhone
-      - iPad
-      - Android
-      - Windows
-      - Mac
-      - Linux
-   
-   5. Customer Support Options:
-      - Phone Support
-      - 24/7 Live Support
-      - Online Support
-   
-   6. Training Platforms:
-      - Documentation
-      - Webinars
-      - Live online sessions
-      - In-person training
-   
-   7. Vendor Details:
-      - Company name
-      - Year founded
-      - Country
-   
-   8. List of Features:
-      - Comprehensive list of features offered by each tool
-   
-   Note: Provide all ratings as specific numbers not ranges, dont provide any other non object response in it such as default notes. Use boolean values (true/false) where applicable.
-   `;
+   Note: Provide all ratings as specific numbers not ranges, Provide response in json format,dont provide any other non object response in it such as default notes. Use boolean values (true/false) where applicable.
+   Dont give any additional notes or any other information just give the desired result
+   Dont provide any notes after the output just give the output, provide full output without breaking the response`;
 
     const result = await geminiModel.generateContent(prompt);
     const response = await result.response;
@@ -97,7 +105,7 @@ const getItsmData = async () => {
 const convertResponseToJson=(response)=> {
    // Removing the surrounding quotes and backslashes
    const cleanedResponse = response.replace(/```json\n/g, '').replace(/\n```/g, '').replace(/\\n/g, '').replace(/\\"/g, '"');
-  
+  console.log(cleanedResponse)
    // Parsing the cleaned string to JSON
    const jsonResponse = JSON.parse(cleanedResponse);
    storeJsonToExcel(jsonResponse);
