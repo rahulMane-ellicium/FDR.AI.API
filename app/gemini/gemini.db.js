@@ -25,7 +25,7 @@ const saveItsmTools = async (itsmTools) => {
 
     // Now insert the new data for each tool
     for (let tool in itsmTools) {
-      console.log(itsmTools[tool]);
+      
       const insertToolQuery = `
           DECLARE @InsertedID TABLE (ID INT);
           INSERT INTO ${SQL_SCHEMA}.tools (name, api_access)
@@ -71,7 +71,7 @@ const saveItsmTools = async (itsmTools) => {
         .input("name", tool)
         .input(
           "api_access",
-          itsmTools[tool]["API and Integration Support"]["API access"]
+          itsmTools[tool].api_and_integration_support.api_access
         );
 
       const {
@@ -79,71 +79,59 @@ const saveItsmTools = async (itsmTools) => {
       } = await request.query(insertToolQuery);
       request
         .input("tool_id", tool_id.ID)
-        .input("total_reviews", itsmTools[tool].Ratings["Total Reviews"])
-        .input("ease_of_use", itsmTools[tool].Ratings["Ease of Use"])
-        .input("Features", itsmTools[tool].Ratings["Features"])
-        .input("Design", itsmTools[tool].Ratings["Design"])
-        .input("Support", itsmTools[tool].Ratings["Support"])
-        .input("Overall", itsmTools[tool].Ratings["Overall"]);
+        .input("total_reviews", itsmTools[tool].ratings.total_reviews)
+        .input("ease_of_use", itsmTools[tool].ratings.ease_of_use)
+        .input("features", itsmTools[tool].ratings.features)
+        .input("design", itsmTools[tool].ratings.design)
+        .input("support", itsmTools[tool].ratings.support)
+        .input("overall", itsmTools[tool].ratings.overall);
 
       await request.query(insertRatingsQuery);
 
       request
         .input(
           "active_directory",
-          itsmTools[tool]["API and Integration Support"].Integrations[
-            "Active Directory"
-          ]
+          itsmTools[tool].api_and_integration_support.integration_support.active_directory
         )
         .input(
           "answer_gpt",
-          itsmTools[tool]["API and Integration Support"].Integrations[
-            "Answer GPT"
-          ]
+          itsmTools[tool].api_and_integration_support.integration_support.answer_gpt
         )
         .input(
           "assess360",
-          itsmTools[tool]["API and Integration Support"].Integrations[
-            "Assess360"
-          ]
+          itsmTools[tool].api_and_integration_support.integration_support.assess360
         )
         .input(
           "bigid",
-          itsmTools[tool]["API and Integration Support"].Integrations["BigID"]
+          itsmTools[tool].api_and_integration_support.integration_support.bigid
         )
         .input(
           "cozyroc_ssis_suite",
-          itsmTools[tool]["API and Integration Support"].Integrations[
-            "Cozyroc SSIS+ Suite"
-          ]
+          itsmTools[tool].api_and_integration_support.integration_support.cozyroc_ssis_suite
         )
         .input(
           "cloudhub",
-          itsmTools[tool]["API and Integration Support"].Integrations[
-            "CloudHub"
-          ]
+          itsmTools[tool].api_and_integration_support.integration_support.cloudhub
         )
         .input(
           "exalate",
-          itsmTools[tool]["API and Integration Support"].Integrations["Exalate"]
+          itsmTools[tool].api_and_integration_support.integration_support.exalate
         )
         .input(
           "elastic_observability",
-          itsmTools[tool]["API and Integration Support"].Integrations[
-            "Elastic Observability"
-          ]
+          itsmTools[tool].api_and_integration_support.integration_support.elastic_observability
         )
         .input(
           "incydr",
-          itsmTools[tool]["API and Integration Support"].Integrations["Incydr"]
+          itsmTools[tool].api_and_integration_support.integration_support.incydr
         )
         .input(
           "nexpose",
-          itsmTools[tool]["API and Integration Support"].Integrations["Nexpose"]
+          itsmTools[tool].api_and_integration_support.integration_support.nexpose
         )
         .input(
           "other_available_integrations",
-          itsmTools[tool]["API and Integration Support"].Integrations["Other"]
+          itsmTools[tool].api_and_integration_support.integration_support.other_available_integrations
             ? true
             : false
         );
@@ -153,41 +141,41 @@ const saveItsmTools = async (itsmTools) => {
       request
         .input(
           "pricing_tiers",
-          itsmTools[tool]["Pricing Details"]["Pricing Tiers"]
+          itsmTools[tool].pricing_details.pricing_tiers
         )
         .input(
           "free_version_availability",
-          itsmTools[tool]["Pricing Details"]["Free Version Availability"]
+          itsmTools[tool].pricing_details.free_version_availability
         )
         .input(
           "free_trial_availability",
-          itsmTools[tool]["Pricing Details"]["Free Trial Availability"]
+          itsmTools[tool].pricing_details.free_trial_availability
         );
       await request.query(insertPricingDetails);
 
       request
-        .input("saas", itsmTools[tool]["Deployment Support"].SaaS)
-        .input("iphone", itsmTools[tool]["Deployment Support"].iPhone)
-        .input("ipad", itsmTools[tool]["Deployment Support"].iPad)
-        .input("android", itsmTools[tool]["Deployment Support"].Android)
-        .input("windows", itsmTools[tool]["Deployment Support"].Windows)
-        .input("mac", itsmTools[tool]["Deployment Support"].Mac)
-        .input("linux", itsmTools[tool]["Deployment Support"].Linux);
+        .input("saas", itsmTools[tool].deployment_support.saas)
+        .input("iphone", itsmTools[tool].deployment_support.iphone)
+        .input("ipad", itsmTools[tool].deployment_support.ipad)
+        .input("android", itsmTools[tool].deployment_support.android)
+        .input("windows", itsmTools[tool].deployment_support.windows)
+        .input("mac", itsmTools[tool].deployment_support.mac)
+        .input("linux", itsmTools[tool].deployment_support.linux);
 
       await request.query(insertDeploymentSupportQuery);
 
       request
         .input(
           "phone_support",
-          itsmTools[tool]["Customer Support Options"]["Phone Support"]
+          itsmTools[tool].customer_support_options.phone_support
         )
         .input(
           "live_support",
-          itsmTools[tool]["Customer Support Options"]["24/7 Live Support"]
+          itsmTools[tool].customer_support_options.live_support
         )
         .input(
           "online_support",
-          itsmTools[tool]["Customer Support Options"]["Online Support"]
+          itsmTools[tool].customer_support_options.online_support
         );
 
       await request.query(insertCustomerSupportQuery);
@@ -195,33 +183,33 @@ const saveItsmTools = async (itsmTools) => {
       request
         .input(
           "company_name",
-          itsmTools[tool]["Vendor Details"]["Company Name"]
+          itsmTools[tool].vendor_details.company_name
         )
         .input(
           "year_founded",
-          itsmTools[tool]["Vendor Details"]["Year Founded"]
+          itsmTools[tool].vendor_details.year_founded
         )
-        .input("country", itsmTools[tool]["Vendor Details"].Country);
+        .input("country", itsmTools[tool].vendor_details.country);
 
       await request.query(insertVendorQuery);
 
       request
         .input(
           "documentation",
-          itsmTools[tool]["Training Platforms"].Documentation
+          itsmTools[tool].training_platforms.documentation
         )
-        .input("webinars", itsmTools[tool]["Training Platforms"].Webinars)
+        .input("webinars", itsmTools[tool].training_platforms.webinars)
         .input(
           "live_online_sessions",
-          itsmTools[tool]["Training Platforms"]["Live Online Sessions"]
+          itsmTools[tool].training_platforms.live_online_sessions
         )
         .input(
           "in_person_training",
-          itsmTools[tool]["Training Platforms"]["In-Person Training"]
+          itsmTools[tool].training_platforms.in_person_training
         );
 
       await request.query(insertTrainingPlatformQuery);
-      for (let feature of itsmTools[tool].Features) {
+      for (let feature of itsmTools[tool].features) {
         request.replaceInput("feature_name",mssql.VarChar,feature);
 
         await request.query(insertFeatures);

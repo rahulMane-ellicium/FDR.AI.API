@@ -3,11 +3,11 @@ import geminiService from './gemini.service.js';
 
 const scheduleItsmDataSave = () => {
     // Schedule the job for 5:30 PM today
-    cron.schedule('31 19 * * *', async () => {
+    cron.schedule('9 16 * * *', async () => {
         try {
             console.log("Started");
             const response = await geminiService.getItsmData();
-            console.log('Running a job at 5:30 PM today in Asia/Kolkata timezone');
+            console.log('done');
             // res.status(200).send(new ResponseHandler(response));
             // Handle the response as needed
             console.log(response);
