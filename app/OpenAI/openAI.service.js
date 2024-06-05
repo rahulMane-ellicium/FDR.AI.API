@@ -16,41 +16,75 @@ const generateData = async (file) => {
       .join("\n");
 
     const prompt = `Role: You are a top IT consultant.
-     Objective: Your objective is to go through the requirements provided to you above and suggest the three best fitting ITSM tools in the market from following list of tools:
-   - ServiceNow ITSM
-   - SolarWinds Service Desk
-   - ServiceDesk Plus
-   - TOPdesk
-   - SymphonyAI ITSM
-   - Jira Service Management
-   - Cherwell Service Management
-   - Freshservice
-   - SysAid
-   - BMC Remedy ITSM
-   - Ivanti Neurons ITSM
-   - EV Service Manager
-   - SolarWinds Web Help Desk
-   - TeamDynamix ITSM
-   - InvGate Service Desk
-     Task:
-     1. First go through following the requirements carefully : {input_data_str}.
-     2. While suggesting tools make sure that you keep budget parameter of requirements as the utmost priority. If a tool you suggest fits in budget then good if not then suggest tools that will be within or around the budget.
-     3. After going through the instructions and requirements you have to carefully deduce what all ITSM tools fit the exact requirements alongwith its reasons.
-     4. While deducing you have to suggest top three tools on the basis of how much a particular tool is matching the requirements.
-     5. You also have to rank these tools according to the matching (1st being the one that matches all criteria amd so on and so forth)
-     8. Your rank must be provided in the end based on the matching of requirements (1ST MUST BE THE TOOL THAT MATCHES IF NOT ALL OF THE REQUIREMENTS BUT MOST OF THEM).
-     9. Output Format:{{"Top_tools" : [tool1,tool2,tool3],"Reasons" : ""}}
-     10.Specify the appropriate reasons for choosing the top 3 tools in output format and specify the tools in Top_tools in Output Format according to ascending order of rankings.
-     11.Give output in Object format as specified in Output Format.
+    Objective: Your objective is to go through the requirements provided to you above and suggest the three best fitting ITSM tools in the market from the following list of tools:
+    - ServiceNow ITSM
+    - SolarWinds Service Desk
+    - ServiceDesk Plus
+    - TOPdesk
+    - SymphonyAI ITSM
+    - Jira Service Management
+    - Cherwell Service Management
+    - Freshservice
+    - SysAid
+    - BMC Remedy ITSM
+    - Ivanti Neurons ITSM
+    - EV Service Manager
+    - SolarWinds Web Help Desk
+    - TeamDynamix ITSM
+    - InvGate Service Desk
 
-     Requirement : ${requirementText}
+    Task:
+    1. Carefully review the provided requirements: ${requirementText}.
+    2. While suggesting tools, prioritize the budget, but also consider other critical parameters such as:
+    "Customer Name": "string",
+    "Domian": "string",
+    "Location": "string",
+    "Business Units Using RF": "string",
+    "User Control": "Admin: number, Agent: number, End Users: number",
+    "Modules Using": "string",
+    "CMBD": "string",
+    "Custom Portal": "string",
+    "SSO": "string",
+    "Customization": "string",
+    "Integrations": "string",
+    "Major Use cases": "string",
+    "Must have features": "string",
+    "Sentiment/Feedback on RF": "string",
+    "Customer Expectations": "string",
+    "Limitations of existing tool": "string",
+    "Platform Preference": "string",
+    "Budget": number,
+    "Implementation timeine": "string",
+    "Custom Module": "string",
+    "Ticket Volume(monthly )": number,
+    "No of Catlog/Service Request Forms":number ,
+    "Level of approval(max)": number,
+    "Full-Copy Sandbox": "string",
+    "Ticket Source ": "string",
+    "Cross BU Ticket Transfer": "string",
+    "Endpoint Management": "string",
+    "Reconciliation of Assests": "string",
+    "Normalization of Assests": "string",
+    "Asset Count": number
+   
+    3. After analyzing all the parameters in the requirements, deduce which ITSM tools best fit the exact requirements along with reasons.
+    4. If any of the parameter's values are changed, then the tools should change.
+    5. The input parameters will be present as an array of dictionary where each parameter is key of dictionary.
+    6. Suggest the top three tools based on how well each tool matches the requirements.
+    7. Rank these tools according to the matching (1st being the one that matches most of the criteria).
+    8. Provide the rankings at the end based on the matching of requirements (1st must be the tool that matches most of the requirements).
+    9. Output Format: {{"Top_tools" : [tool1,tool2,tool3], "Reasons" : ""}}
+    10. Specify the appropriate reasons for choosing the top 3 tools in the output format and specify the tools in Top_tools in the Output Format according to the ascending order of rankings.
+    11. Give output in Object format as specified in Output Format.
+    12. Ensure to dynamically adjust the output based on any changes in the input parameters provided.
+    13. Give output based on the given input parameters and its values.
       `;
 
     const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [{ role: "user", content: prompt }],
       seed: 1,
-      temperature: 1,
+      temperature: 0,
     });
 
     const text = response.choices[0].message.content;
