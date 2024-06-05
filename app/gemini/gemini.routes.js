@@ -23,3 +23,12 @@ geminiRouter.get("/get-all-itsm-tool",async(req,res,next)=>{
     }
 })
 
+geminiRouter.get('/get-latest-time',async(req,res,next)=>{
+    try{
+        const response=await geminiService.latestTime();
+        res.status(200).send(new ResponseHandler(response));
+    }catch(error){
+        next(error)
+    }
+})
+

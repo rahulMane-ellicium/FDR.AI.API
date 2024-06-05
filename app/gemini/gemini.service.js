@@ -107,8 +107,18 @@ const convertResponseToJson = (response) => {
 };
 
 
-
+const latestTime=async()=>{
+    try{
+        const results= await geminiDb.getLatestTimeStamp()
+        return results
+    }catch(error){
+        console.log(error);
+        throw error
+    }
+  
+}
 
 export default {
-  getItsmData
+  getItsmData,
+  latestTime
 };

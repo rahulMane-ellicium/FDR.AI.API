@@ -221,6 +221,73 @@ const saveItsmTools = async (itsmTools) => {
   }
 };
 
+
+
+const getLatestTimeStamp = async () => {
+  try {
+    const getLatestTimeStampQuery = `SELECT TOP 1 created_at 
+    FROM ${SQL_SCHEMA}.tools
+    ORDER BY created_at DESC;`;
+    const request = pool.request();
+    const result = await request.query(getLatestTimeStampQuery);
+
+    const output = result.recordset[0].created_at;
+
+    // Convert the output to a JavaScript Date object
+    const date = new Date(output);
+
+    // Format the time using the provided function
+    const formatReadableTime = (date) => {
+      const options = {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        timeZone: 'UTC' // Use UTC to avoid time zone issues
+      };
+      return date.toLocaleTimeString('en-US', options);
+    };
+
+    const formattedTime = formatReadableTime(date);
+
+   
+    const [time, period] = formattedTime.split(' ');
+    const [hours, minutes, seconds] = time.split(':');
+
+    let adjustedHours = parseInt(hours);
+    if (adjustedHours !== 12) {
+      adjustedHours += 12;
+    } else if (adjustedHours === 12) {
+      adjustedHours = 0;
+    }
+
+    const finalTime = `${String(adjustedHours).padStart(2, '0')}:${minutes}:${seconds}`;
+
+
+    const dateOptions = {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: '2-digit',
+    };
+
+    const formattedDate = new Intl.DateTimeFormat('en-US', dateOptions).format(date);
+
+    
+    const finalOutput = `${formattedDate} ${finalTime}`;
+
+  
+    return finalOutput;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+
+
+
 export default {
   saveItsmTools,
+  getLatestTimeStamp
 };
+
