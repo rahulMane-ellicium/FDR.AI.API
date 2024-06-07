@@ -181,7 +181,7 @@ const saveItsmTools = async (itsmTools) => {
       await request.query(insertCustomerSupportQuery);
 
       request
-        .input(
+        .input(   
           "company_name",
           itsmTools[tool].vendor_details.company_name
         )
@@ -276,14 +276,12 @@ const getLatestTimeStamp = async () => {
     // Combine the date and time into the final output
     const finalOutput = `${formattedDate} ${finalTime}`;
 
-    console.log(finalOutput);
     return finalOutput;
   } catch (error) {
     console.log(error);
     throw error;
   }
 };
-
 
 
 

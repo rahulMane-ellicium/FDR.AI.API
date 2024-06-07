@@ -17,69 +17,92 @@ const generateData = async (file) => {
       .join("\n");
 
     const prompt = `Role: You are a top IT consultant.
-    Objective: Your objective is to go through the requirements provided to you above and suggest the three best fitting ITSM tools in the market from the following list of tools:
-    - ServiceNow ITSM
-    - SolarWinds Service Desk
-    - ServiceDesk Plus
-    - TOPdesk
-    - SymphonyAI ITSM
-    - Jira Service Management
-    - Cherwell Service Management
-    - Freshservice
-    - SysAid
-    - BMC Remedy ITSM
-    - Ivanti Neurons ITSM
-    - EV Service Manager
-    - SolarWinds Web Help Desk
-    - TeamDynamix ITSM
-    - InvGate Service Desk
-
-    Task:
-    1. Carefully review the provided requirements: ${requirementText}.
-    2. While suggesting tools, prioritize the budget, but also consider other critical parameters such as:
-    "Customer Name": "string",
-    "Domian": "string",
-    "Location": "string",
-    "Business Units Using RF": "string",
-    "User Control": "Admin: number, Agent: number, End Users: number",
-    "Modules Using": "string",
-    "CMBD": "string",
-    "Custom Portal": "string",
-    "SSO": "string",
-    "Customization": "string",
-    "Integrations": "string",
-    "Major Use cases": "string",
-    "Must have features": "string",
-    "Sentiment/Feedback on RF": "string",
-    "Customer Expectations": "string",
-    "Limitations of existing tool": "string",
-    "Platform Preference": "string",
-    "Budget": number,
-    "Implementation timeine": "string",
-    "Custom Module": "string",
-    "Ticket Volume(monthly )": number,
-    "No of Catlog/Service Request Forms":number ,
-    "Level of approval(max)": number,
-    "Full-Copy Sandbox": "string",
-    "Ticket Source ": "string",
-    "Cross BU Ticket Transfer": "string",
-    "Endpoint Management": "string",
-    "Reconciliation of Assests": "string",
-    "Normalization of Assests": "string",
-    "Asset Count": number
-   
-    3. After analyzing all the parameters in the requirements, deduce which ITSM tools best fit the exact requirements along with reasons.
-    4. If any of the parameter's values are changed, then the tools should change.
-    5. The input parameters will be present as an array of dictionary where each parameter is key of dictionary.
-    6. Suggest the top three tools based on how well each tool matches the requirements.
-    7. Rank these tools according to the matching (1st being the one that matches most of the criteria).
-    8. Provide the rankings at the end based on the matching of requirements (1st must be the tool that matches most of the requirements).
-    9. Output Format: {{"Top_tools" : [tool1,tool2,tool3], "Reasons" : ""}}
-    10. Specify the appropriate reasons for choosing the top 3 tools in the output format and specify the tools in Top_tools in the Output Format according to the ascending order of rankings.
-    11. Give output in Object format as specified in Output Format.
-    12. Ensure to dynamically adjust the output based on any changes in the input parameters provided.
-    13. Give output based on the given input parameters and its values.
-      `;  
+Objective: Your objective is to go through the requirements provided to you and suggest the Six best fitting ITSM tools in the market from the following list of tools:
+- ServiceNow ITSM
+- SolarWinds Service Desk
+- ServiceDesk Plus
+- TOPdesk
+- SymphonyAI ITSM
+- Jira Service Management
+- Cherwell Service Management
+- Freshservice
+- SysAid
+- BMC Remedy ITSM
+- Ivanti Neurons ITSM
+- EV Service Manager
+- SolarWinds Web Help Desk
+- TeamDynamix ITSM
+- InvGate Service Desk
+ 
+Task:
+1. Carefully review the provided requirements: ${requirementText}.
+2. Prioritize the features according to the "Priority Order of features" specified in the input_text. This means you should first evaluate the tools based on the features listed in the "Priority Order of features", and then consider the remaining features provided in the input.
+3. Deduce which ITSM tools best fit the exact requirements along with detailed reasons in bullet points for each tool.
+4. While giving the reasons, always mention the parameters and features considered for selecting the top 3 tools, highlighting those from the "Priority Order of features" first.
+5. Re-evaluate the tools each time based on any changes in the input parameters provided.
+6. Suggest the top three tools based on how well each tool matches the requirements and priority order given based on their ranking.
+7. Summarize your decision behind choosing the tools under "Reasons" and give a summary in 5 points for each tool.
+8. If budget is not provided, then give free ITSM tools strictly, do not include tools that offer free trials.
+9. If none of the tools fit in the budget, then give the output as "Nothing fits in budget".
+10. Mention the percentage to which the user requirements match with the tool features.
+11. STRICTLY FOLLOW THESE INSTRUCTIONS AND THE BELOW OUTPUT FORMAT. DO NOT GIVE YOUR OWN OUTPUT.
+12. Regarding the output format: Don't just say it fits the requirements; instead, give the statistical reason behind it. Add some numbers or use the leading companies that use these tools.
+13. An Important Point Give me numbers wherever needed to justify the reason.
+14. Always add pricing of the tool in the reason for each tool.
+15.I want the reasons why arent you giving me results
+16.I told you to give the top 6 tools dont give me 3 tools
+ 
+Output Format:
+{
+    "Top_tools": [tool1, tool2, tool3,tool4,tool5,tool6],
+    "Reasons": {
+        "toolname1": {{
+            "Reason 1": "Explanation (highlight features from 'Priority Order of features')",
+            "Reason 2": "Explanation (highlight features from 'Priority Order of features')",
+            "Reason 3": "Explanation",
+            "Reason 4": "Explanation",
+            "Reason 5": "Explanation"
+        },
+        "toolname2": {
+            "Reason 1": "Explanation (highlight features from 'Priority Order of features')",
+            "Reason 2": "Explanation (highlight features from 'Priority Order of features')",
+            "Reason 3": "Explanation",
+            "Reason 4": "Explanation",
+            "Reason 5": "Explanation"
+        },
+        "toolname3": {
+            "Reason 1": "Explanation (highlight features from 'Priority Order of features')",
+            "Reason 2": "Explanation (highlight features from 'Priority Order of features')",
+            "Reason 3": "Explanation",
+            "Reason 4": "Explanation",
+            "Reason 5": "Explanation"
+        }
+    },
+    Make sure u always give the top 3 companies I dont want less than 3 or greater than 3
+    "Leading_companies": {
+        "toolname1": {
+            "-Companies that use this tool": [
+                "company1",
+                "company2",
+                "company3"
+            ]
+        },
+        "toolname2": {
+            "-Companies that use this tool": [
+                "company1",
+                "company2",
+                "company3"
+            ]
+        },
+        "toolname3": {
+            "-Companies that use this tool": [
+                "company1",
+                "company2",
+                "company3"
+            ]
+        }
+    }
+}`;
 
     const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
@@ -89,11 +112,12 @@ const generateData = async (file) => {
     });
 
     const text = response.choices[0].message.content;
-    
+    console.log(text);
+
     const parsedJson = JSON.parse(text);
-    console.log(parsedJson);
+
     const arrayGptOutput = parsedJson.Top_tools;
-   
+
     const topToolData = await openAiDb.getItsmData(arrayGptOutput);
 
     return { ...topToolData, reason: parsedJson.Reasons };
@@ -101,7 +125,6 @@ const generateData = async (file) => {
     throw error;
   }
 };
-
 
 export default {
   generateData,
