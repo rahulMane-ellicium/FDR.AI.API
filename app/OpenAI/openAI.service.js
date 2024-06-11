@@ -54,23 +54,25 @@ Task:
  
 Output Format:
 {
-    "Top_tools": [tool1, tool2, tool3,tool4,tool5,tool6],
+    "Top_tools": [tool1, tool2, tool3,tool4,tool5,tool6]
+    Specify the ranks of the tools as well thats very important write [Rank 1 - Tool 1] and so on and so forth
+    ,
     "Reasons": {
-        "toolname1": {{
+        "    Rank 1 - toolname1": {{
             "Reason 1": "Explanation (highlight features from 'Priority Order of features')",
             "Reason 2": "Explanation (highlight features from 'Priority Order of features')",
             "Reason 3": "Explanation",
             "Reason 4": "Explanation",
             "Reason 5": "Explanation"
         },
-        "toolname2": {
+        " Rank 2 - toolname2": {
             "Reason 1": "Explanation (highlight features from 'Priority Order of features')",
             "Reason 2": "Explanation (highlight features from 'Priority Order of features')",
             "Reason 3": "Explanation",
             "Reason 4": "Explanation",
             "Reason 5": "Explanation"
         },
-        "toolname3": {
+        "Rank 3 - toolname3": {
             "Reason 1": "Explanation (highlight features from 'Priority Order of features')",
             "Reason 2": "Explanation (highlight features from 'Priority Order of features')",
             "Reason 3": "Explanation",
