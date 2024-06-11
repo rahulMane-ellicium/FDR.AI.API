@@ -23,8 +23,7 @@ const getItsmData = async (arrayGptOutput) => {
     const {recordset} = await request.query(query);
   
     const data = await convertObject(recordset);
-    
-    console.log(data,'data')
+  
     return data;
   } catch (error) {
     console.log(error);
@@ -79,8 +78,9 @@ const convertObject = async (toolsArray) => {
         nexpose,
         other_available_integrations,
       } = tool;
-
+        
       if (!convertedTools[name]) {
+        
         convertedTools[name] = {
           ratings: {
             total_reviews,
@@ -90,6 +90,7 @@ const convertObject = async (toolsArray) => {
             support,
             overall,
           },
+          
           api_and_integration_support: {
             api_access,
             integration_support: {
@@ -138,23 +139,10 @@ const convertObject = async (toolsArray) => {
           },
           features: [feature_name],
         };
-      } else {
-        convertedTools[name].ratings.total_reviews += total_reviews;
-        convertedTools[name].ratings.ease_of_use += ease_of_use;
-        convertedTools[name].ratings.features += features;
-        convertedTools[name].ratings.design += design;
-        convertedTools[name].ratings.support += support;
-        convertedTools[name].ratings.overall += overall;
-        convertedTools[name].features.push(feature_name);
-      }
-    });
-
-    // Calculate average ratings
-    Object.values(convertedTools).forEach((tool) => {
-      const totalRatings = Object.keys(tool.ratings).length;
-      for (let key in tool.ratings) {
-        tool.ratings[key] /= totalRatings;
-        tool.ratings[key] = Number(tool.ratings[key].toFixed(1));
+       
+      } 
+      else {
+        convertedTools[name].features.push(feature_name);        
       }
     });
 

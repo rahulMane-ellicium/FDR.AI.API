@@ -81,27 +81,29 @@ Output Format:
     Make sure u always give the top 3 companies I dont want less than 3 or greater than 3
     "Leading_companies": {
         "toolname1": {
-            "-Companies that use this tool": [
-                "company1",
-                "company2",
-                "company3"
-            ]
+             
+                "company1": "company1_name",
+                "company2": "company2_name",
+                "company3": "company3_name"
+            
         },
         "toolname2": {
-            "-Companies that use this tool": [
-                "company1",
-                "company2",
-                "company3"
-            ]
+             
+                "company1": "company1_name",
+                "company2": "company2_name",
+                "company3": "company3_name"
+            
         },
         "toolname3": {
-            "-Companies that use this tool": [
-                "company1",
-                "company2",
-                "company3"
-            ]
+            
+                "company1": "company1_name",
+                "company2": "company2_name",
+                "company3": "company3_name"
+            
         }
     }
+
+    Im not able to parse the data of Leading_companies it gives an array I want an object 
 }`;
 
     const response = await openai.chat.completions.create({
@@ -112,15 +114,23 @@ Output Format:
     });
 
     const text = response.choices[0].message.content;
-    console.log(text);
+
 
     const parsedJson = JSON.parse(text);
+    // console.log(parsedJson);
 
+    const leadingCompanies = {};
+
+    
+    
+    Object.keys(parsedJson.Leading_companies).forEach((tool) => {
+        
+        const companiesObject = parsedJson.Leading_companies[tool];
+        leadingCompanies[tool] =  {"-Companies that use this tool": companiesObject };
+    });
     const arrayGptOutput = parsedJson.Top_tools;
-
     const topToolData = await openAiDb.getItsmData(arrayGptOutput);
-
-    return { ...topToolData, reason: parsedJson.Reasons };
+    return { ...topToolData, reason: parsedJson.Reasons, Leading_companies: leadingCompanies };
   } catch (error) {
     throw error;
   }
