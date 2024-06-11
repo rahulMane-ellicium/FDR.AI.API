@@ -181,7 +181,7 @@ const saveItsmTools = async (itsmTools) => {
       await request.query(insertCustomerSupportQuery);
 
       request
-        .input(
+        .input(   
           "company_name",
           itsmTools[tool].vendor_details.company_name
         )
@@ -223,6 +223,7 @@ const saveItsmTools = async (itsmTools) => {
 
 
 
+
 const getLatestTimeStamp = async () => {
   try {
     const getLatestTimeStampQuery = `SELECT TOP 1 created_at 
@@ -249,20 +250,20 @@ const getLatestTimeStamp = async () => {
 
     const formattedTime = formatReadableTime(date);
 
-   
+    // Remove AM/PM from the formatted time and adjust for 12-hour format without AM/PM
     const [time, period] = formattedTime.split(' ');
     const [hours, minutes, seconds] = time.split(':');
 
     let adjustedHours = parseInt(hours);
-    if (adjustedHours !== 12) {
+    if (period === 'PM' && adjustedHours !== 12) {
       adjustedHours += 12;
-    } else if (adjustedHours === 12) {
+    } else if (period === 'AM' && adjustedHours === 12) {
       adjustedHours = 0;
     }
 
     const finalTime = `${String(adjustedHours).padStart(2, '0')}:${minutes}:${seconds}`;
 
-
+    // Format the date part
     const dateOptions = {
       weekday: 'short',
       year: 'numeric',
@@ -272,17 +273,15 @@ const getLatestTimeStamp = async () => {
 
     const formattedDate = new Intl.DateTimeFormat('en-US', dateOptions).format(date);
 
-    
+    // Combine the date and time into the final output
     const finalOutput = `${formattedDate} ${finalTime}`;
 
-  
     return finalOutput;
   } catch (error) {
     console.log(error);
     throw error;
   }
 };
-
 
 
 
