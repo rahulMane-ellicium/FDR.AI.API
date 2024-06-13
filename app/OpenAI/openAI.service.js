@@ -3,7 +3,6 @@ import openAiDb from "./openAi.db.js";
 
 const generateData = async (requirement) => {
   try {
-    console.log("Generating data for requirement:", requirement);
 
     const requirementText = Object.entries(requirement[0])
       .map(([key, value]) => `  - ${key} : ${value}`)
@@ -98,7 +97,7 @@ const generateData = async (requirement) => {
       temperature: 0,
     });
 
-    console.log("Response from OpenAI:", response);
+
 
     const text = response.choices[0].message.content;
     const parsedJson = JSON.parse(text);
@@ -114,11 +113,6 @@ const generateData = async (requirement) => {
     const arrayGptOutput = parsedJson.Top_tools;
     const topToolData = await openAiDb.getItsmData(arrayGptOutput);
 
-    console.log("Generated data:", {
-      ...topToolData,
-      reason: parsedJson.Reasons,
-      Leading_companies: leadingCompanies,
-    });
     
     return {
       ...topToolData,

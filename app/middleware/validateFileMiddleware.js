@@ -41,11 +41,11 @@ const validateFileMiddleware = (req, res, next) => {
   try {
     const { file } = req;
     if (!file) {
-        console.error("No file uploaded");
+        
         throw new Error("No file uploaded");
       }
   
-      console.log("Processing file:", file.originalname);
+      
 
     const { buffer } = file;
     const workbook = XLSX.read(buffer, { type: "buffer" });
@@ -54,28 +54,27 @@ const validateFileMiddleware = (req, res, next) => {
     const requirement = XLSX.utils.sheet_to_json(worksheet);
 
     if (!requirement.length) {
-        console.error("Empty file error:", empty_File);
+      
       throw empty_File;
     }
 
     const keysArray = Object.keys(requirement[0]);
-    console.log("Extracted keys from Excel file:", keysArray);
+
     const missingKeys = standardInput.filter(key => !keysArray.includes(key));
 
     if (missingKeys.length>0) {
-        console.error("Missing keys error:", missingKeys);
-      throw {
-        wrong_file,
-      details: `The following required keys are missing from the Excel file: ${missingKeys.join(", ")}`
-    };
+       
+      throw wrong_file
+     
+
     }
     
 
-    console.log("File validation successful");
+   
     req.requirement = requirement;
     next();
   } catch (error) {
-    console.error("Error in file validation middleware:", error);
+    
     next(error);
   }
 };
