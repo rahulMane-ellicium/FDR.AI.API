@@ -2,6 +2,11 @@ import { openai } from "../../config/openai.config.js";
 import XLSX from "xlsx";
 import openAiDb from "./openAi.db.js";
 
+
+import {openAImessages} from '../messages/openAImessages.js'
+
+const {empty_File,wrong_file}=openAImessages
+
 const generateData = async (file) => {
   try {
     const { buffer } = file;
@@ -11,7 +16,7 @@ const generateData = async (file) => {
     const requirement = XLSX.utils.sheet_to_json(worksheet);
 
     if (!requirement.length) {
-      throw new Error("The Excel file is empty or incorrectly formatted.");
+      throw  empty_File
     }
 
     const requirementText = Object.entries(requirement[0])
@@ -55,10 +60,11 @@ const generateData = async (file) => {
     ];
 
     const missingKeys = standardInput.filter(key => !keysArray.includes(key));
-
+    
 
     if (missingKeys.length) {
-      throw new Error(`The following required keys are missing from the Excel file: ${missingKeys.join(", ")}`);
+      throw wrong_file
+      // throw new Error(`The following required keys are missing from the Excel file: ${missingKeys.join(", ")}`);
     }
 
     if (standardInput.length === keysArray.length) {
@@ -192,7 +198,7 @@ Output Format:
             Leading_companies: leadingCompanies,
           };
         } else {
-          console.log("Inside else");
+            
           return false;
         }
       }
