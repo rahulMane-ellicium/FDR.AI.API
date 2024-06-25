@@ -222,8 +222,6 @@ const saveItsmTools = async (itsmTools) => {
 };
 
 
-
-
 const getLatestTimeStamp = async () => {
   try {
     const getLatestTimeStampQuery = `SELECT TOP 1 created_at 
@@ -234,54 +232,39 @@ const getLatestTimeStamp = async () => {
 
     const output = result.recordset[0].created_at;
 
-    // Convert the output to a JavaScript Date object
+   
     const date = new Date(output);
 
-    // Format the time using the provided function
+  
     const formatReadableTime = (date) => {
-      const options = {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        timeZone: 'UTC' // Use UTC to avoid time zone issues
-      };
-      return date.toLocaleTimeString('en-US', options);
+      const hours = String(date.getUTCHours()).padStart(2, '0');
+      const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+      const seconds = String(date.getUTCSeconds()).padStart(2, '0');
+      return `${hours}:${minutes}:${seconds}`;
     };
 
     const formattedTime = formatReadableTime(date);
 
-    // Remove AM/PM from the formatted time and adjust for 12-hour format without AM/PM
-    const [time, period] = formattedTime.split(' ');
-    const [hours, minutes, seconds] = time.split(':');
-
-    let adjustedHours = parseInt(hours);
-    if (period === 'PM' && adjustedHours !== 12) {
-      adjustedHours += 12;
-    } else if (period === 'AM' && adjustedHours === 12) {
-      adjustedHours = 0;
-    }
-
-    const finalTime = `${String(adjustedHours).padStart(2, '0')}:${minutes}:${seconds}`;
-
-    // Format the date part
-    const dateOptions = {
-      weekday: 'short',
+    
+    const formattedDate = new Intl.DateTimeFormat('en-US', {      weekday: 'short',
       year: 'numeric',
       month: 'short',
       day: '2-digit',
-    };
+      timeZone: 'UTC'  // Ensure UTC is used
+    }).format(date);
 
-    const formattedDate = new Intl.DateTimeFormat('en-US', dateOptions).format(date);
-
-    // Combine the date and time into the final output
-    const finalOutput = `${formattedDate} ${finalTime}`;
+   
+    const finalOutput = `${formattedDate} ${formattedTime}`;
 
     return finalOutput;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
+
+
+
 
 
 
