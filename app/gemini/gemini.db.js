@@ -246,7 +246,8 @@ const getLatestTimeStamp = async () => {
     const formattedTime = formatReadableTime(date);
 
     
-    const formattedDate = new Intl.DateTimeFormat('en-US', {      weekday: 'short',
+    const formattedDate = new Intl.DateTimeFormat('en-US', {     
+      weekday: 'short',
       year: 'numeric',
       month: 'short',
       day: '2-digit',
